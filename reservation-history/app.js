@@ -247,11 +247,11 @@ function closeDetails() {
 
 async function loadReservations() {
   try {
-    const response = await fetch("./api/reservations.php", { headers: { Accept: "application/json" } });
+    const response = await fetch("../api/reservations.php", { headers: { Accept: "application/json" } });
     if (!response.ok) throw new Error(`Reservation endpoint returned ${response.status}`);
     const payload = await response.json();
     const rows = Array.isArray(payload) ? payload : payload.reservations;
-    if (Array.isArray(rows)) reservations = rows;
+    if (Array.isArray(rows)) reservations = rows.map(row => ({ ...row, amount: row.total_price ?? row.amount }));
   } catch (error) {
     // The local preview uses the sample reservations when PHP or a database is not configured.
     reservations = [...demoReservations];

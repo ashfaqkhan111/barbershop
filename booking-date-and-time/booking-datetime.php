@@ -28,7 +28,7 @@ if (isset($_GET['month']) || isset($_GET['date'])) {
         respond(400, ['error' => 'Pilih bulan atau tanggal yang valid']);
     }
 
-    require_once __DIR__ . '/config/database.php';
+    require_once __DIR__ . '/../config/database.php';
 
     try {
         $pdo = getDatabaseConnection();
@@ -200,7 +200,7 @@ if (isset($_GET['month']) || isset($_GET['date'])) {
         </aside>
       </div>
 
-      <a class="datetime-back" href="booking-services.html"><svg aria-hidden="true"><use href="#dt-arrow-left"></use></svg>Kembali</a>
+      <a class="datetime-back" href="../booking-service/booking_service.php"><svg aria-hidden="true"><use href="#dt-arrow-left"></use></svg>Kembali</a>
       <button class="datetime-cancel" type="button" id="cancel-booking">Batalkan pemesanan</button>
     </main>
   </div>

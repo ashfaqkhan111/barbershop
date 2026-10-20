@@ -1,4 +1,6 @@
 -- createdb pemon_barbershop && psql -d pemon_barbershop -f sql/schema.sql
+-- NOTE: reservations, payments and the booking tables are defined in
+-- sql/booking_schema.sql (MySQL), which is what the booking pages query.
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   nama VARCHAR(100) NOT NULL,

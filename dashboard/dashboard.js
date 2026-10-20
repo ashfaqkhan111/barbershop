@@ -57,7 +57,7 @@ function renderAppointment(appointment) {
   const content = document.querySelector("#appointment-content");
   if (!appointment) {
     status.hidden = true;
-    content.innerHTML = `<div class="empty-appointment"><h3>Belum ada reservasi mendatang</h3><p>Atur kunjungan berikutnya dan pilih waktu yang sesuai.</p><a href="booking-services.html">Pesan reservasi <span aria-hidden="true">→</span></a></div>`;
+    content.innerHTML = `<div class="empty-appointment"><h3>Belum ada reservasi mendatang</h3><p>Atur kunjungan berikutnya dan pilih waktu yang sesuai.</p><a href="../booking-service/booking_service.php">Pesan reservasi <span aria-hidden="true">→</span></a></div>`;
     return;
   }
 
@@ -65,7 +65,7 @@ function renderAppointment(appointment) {
   status.textContent = appointment.status_label || "Menunggu konfirmasi";
   const start = String(appointment.start_time || "").slice(0, 5);
   const end = String(appointment.end_time || "").slice(0, 5);
-  content.innerHTML = `<div class="appointment-top"><div><span class="appointment-ref">${escapeHtml(appointment.reservation_code)}</span><h3>${escapeHtml(appointment.service_name || "Layanan Pemon")}</h3>${appointment.hairstyle_name ? `<span class="appointment-ref">Gaya: ${escapeHtml(appointment.hairstyle_name)}</span>` : ""}</div><div class="appointment-price"><span>Total biaya</span><strong>${money(appointment.amount)}</strong></div></div><div class="appointment-meta"><div class="meta-item"><svg aria-hidden="true"><use href="#icon-calendar"></use></svg><div><strong>${escapeHtml(dateLabel(appointment.appointment_date))}</strong><span>Tanggal kunjungan</span></div></div><div class="meta-item"><svg aria-hidden="true"><use href="#icon-clock"></use></svg><div><strong>${escapeHtml(start)}${end ? `–${escapeHtml(end)}` : ""} WIB</strong><span>${escapeHtml(appointment.barber_name || "Barber akan ditentukan")}</span></div></div></div>`;
+  content.innerHTML = `<div class="appointment-top"><div><span class="appointment-ref">${escapeHtml(appointment.reservation_code)}</span><h3>${escapeHtml(appointment.service_name || "Layanan Pemon")}</h3>${appointment.hairstyle_name ? `<span class="appointment-ref">Gaya: ${escapeHtml(appointment.hairstyle_name)}</span>` : ""}</div><div class="appointment-price"><span>Total biaya</span><strong>${money(appointment.total_price ?? appointment.amount)}</strong></div></div><div class="appointment-meta"><div class="meta-item"><svg aria-hidden="true"><use href="#icon-calendar"></use></svg><div><strong>${escapeHtml(dateLabel(appointment.appointment_date))}</strong><span>Tanggal kunjungan</span></div></div><div class="meta-item"><svg aria-hidden="true"><use href="#icon-clock"></use></svg><div><strong>${escapeHtml(start)}${end ? `–${escapeHtml(end)}` : ""} WIB</strong><span>${escapeHtml(appointment.barber_name || "Barber akan ditentukan")}</span></div></div></div>`;
 }
 
 function renderDashboard(data) {
