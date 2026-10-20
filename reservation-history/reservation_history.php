@@ -10,16 +10,19 @@ $reservations = [];
 $errorMessage = '';
 
 if ($customerId) {
-    require_once __DIR__ . '/config/database.php';
+    require_once __DIR__ . '/../config/database.php';
     try {
         $pdo = getDatabaseConnection();
         $statement = $pdo->prepare(
-            'SELECT id, reservation_code, status, service_name, additional_service,
-                    barber_name, barber_level, appointment_date, start_time, end_time,
-                    amount, payment_method, payment_status, booked_at
-             FROM reservations
-             WHERE customer_id = :customer_id
-             ORDER BY appointment_date DESC, start_time DESC'
+            'SELECT r.id, r.reservation_code, r.status, r.service_name, r.additional_service,
+                    r.barber_name, r.barber_level, r.appointment_date, r.start_time, r.end_time,
+                    r.total_price, r.booked_at,
+                    p.payment_method, p.payment_status
+             FROM reservations AS r
+             LEFT JOIN payments AS p
+                    ON p.payment_id = (SELECT MAX(p2.payment_id) FROM payments AS p2 WHERE p2.reservation_id = r.id)
+             WHERE r.customer_id = :customer_id
+             ORDER BY r.appointment_date DESC, r.start_time DESC'
         );
         $statement->execute(['customer_id' => $customerId]);
         $reservations = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -84,7 +87,7 @@ $pastReservations = array_filter($reservations, fn($r) => !in_array($r['status']
         </div>
         <div class="intro-actions">
           <span class="location-pill"><span class="location-dot"></span>Pemon Senopati Suites</span>
-          <a class="button button-dark button-book-new" href="booking-services.html"><span aria-hidden="true">＋</span> Pesan Baru</a>
+          <a class="button button-dark button-book-new" href="../booking-service/booking_service.php"><span aria-hidden="true">＋</span> Pesan Baru</a>
         </div>
       </section>
 
@@ -124,7 +127,7 @@ $pastReservations = array_filter($reservations, fn($r) => !in_array($r['status']
                   <p>Layanan: <?= htmlspecialchars($res['service_name']) ?></p>
                   <p>Tanggal: <?= htmlspecialchars($res['appointment_date']) ?> (<?= htmlspecialchars(substr($res['start_time'], 0, 5)) ?>)</p>
                   <p>Status: <strong><?= htmlspecialchars($res['status']) ?></strong></p>
-                  <p>Total: Rp <?= number_format((float)$res['amount'], 0, ',', '.') ?></p>
+                  <p>Total: Rp <?= number_format((float)$res['total_price'], 0, ',', '.') ?></p>
                 </div>
               <?php endforeach; ?>
             <?php endif; ?>
@@ -146,7 +149,7 @@ $pastReservations = array_filter($reservations, fn($r) => !in_array($r['status']
                   <p>Layanan: <?= htmlspecialchars($res['service_name']) ?></p>
                   <p>Tanggal: <?= htmlspecialchars($res['appointment_date']) ?> (<?= htmlspecialchars(substr($res['start_time'], 0, 5)) ?>)</p>
                   <p>Status: <strong><?= htmlspecialchars($res['status']) ?></strong></p>
-                  <p>Total: Rp <?= number_format((float)$res['amount'], 0, ',', '.') ?></p>
+                  <p>Total: Rp <?= number_format((float)$res['total_price'], 0, ',', '.') ?></p>
                 </div>
               <?php endforeach; ?>
             <?php endif; ?>

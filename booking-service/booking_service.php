@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 // Sertakan konfigurasi database Anda
-require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 // Ambil data katalog dari database
 $catalog_items = [];
@@ -17,6 +17,25 @@ try {
     $catalog_items = $statement->fetchAll(PDO::FETCH_ASSOC);
 } catch (Throwable $error) {
     error_log('Booking catalog error: ' . $error->getMessage());
+}
+
+// JSON view of the catalog for the page script (booking-service/app.js).
+// Prices here are display estimates; booking-confirmation.php recalculates them on the server.
+if (($_GET['format'] ?? '') === 'json') {
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    $catalog = array_map(static fn(array $item): array => [
+        'id' => (int) $item['id'],
+        'category' => $item['category'],
+        'name' => $item['name'],
+        'description' => $item['description'],
+        'price' => (int) $item['price'],
+        'duration_minutes' => (int) $item['duration_minutes'],
+        'is_default' => (int) $item['is_default'],
+        'is_active' => (int) $item['is_active'],
+    ], $catalog_items);
+    echo json_encode(['catalog' => $catalog], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
 }
 
 // Pisahkan data berdasarkan kategori untuk mempermudah render
@@ -35,8 +54,8 @@ $addons = array_filter($catalog_items, fn($item) => $item['category'] === 'addon
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="booking-services.css">
-  <script src="booking-services.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
   <div class="booking-frame">
@@ -131,7 +150,7 @@ $addons = array_filter($catalog_items, fn($item) => $item['category'] === 'addon
           </section>
 
           <div class="booking-form-actions">
-            <a class="booking-back-button" href="reservation-list.html"><span aria-hidden="true">←</span> Kembali</a>
+            <a class="booking-back-button" href="../reservations-list/reservation_list.php"><span aria-hidden="true">←</span> Kembali</a>
             <button class="booking-next-button" type="submit">Lanjut ke Pilih Tanggal &amp; Jam <span aria-hidden="true">→</span></button>
           </div>
         </form>

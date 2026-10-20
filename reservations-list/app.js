@@ -186,7 +186,7 @@ async function loadListReservations() {
     if (!response.ok) throw new Error(`Endpoint reservasi memberikan respons ${response.status}`);
     const payload = await response.json();
     const rows = Array.isArray(payload) ? payload : payload.reservations;
-    if (Array.isArray(rows)) listReservations = rows;
+    if (Array.isArray(rows)) listReservations = rows.map(row => ({ ...row, amount: row.total_price ?? row.amount }));
   } catch (error) {
     // Gunakan data contoh jika PHP atau basis data belum tersedia.
     listReservations = [...sampleListReservations];

@@ -1,3 +1,7 @@
+const BOOKING_SERVICES_PAGE = "../booking-service/booking_service.php";
+const BOOKING_DATETIME_PAGE = "../booking-date-and-time/booking-datetime.php";
+const BOOKING_REVIEW_PAGE = "booking-review.php";
+
 let confirmationDraft = readConfirmationDraft();
 let activeCustomer = null;
 let isConfirming = false;
@@ -94,7 +98,7 @@ function validateConfirmationDraft() {
 
 function renderConfirmationDraft() {
   if (!validateConfirmationDraft()) {
-    window.location.replace(confirmationDraft?.service?.id ? "booking-datetime.html" : "booking-services.html");
+    window.location.replace(confirmationDraft?.service?.id ? BOOKING_DATETIME_PAGE : BOOKING_SERVICES_PAGE);
     return;
   }
   const service = confirmationDraft.service;
@@ -128,6 +132,7 @@ function renderConfirmationDraft() {
   document.querySelector("#summary-addons").textContent = addonNames;
   document.querySelector("#summary-duration").textContent = formatConfirmationDuration(confirmationDuration());
   document.querySelector("#summary-total").textContent = formatConfirmationMoney(total);
+  document.querySelector("#summary-payment").textContent = selectedPaymentInput?.value || savedPaymentMethod;
 }
 
 function showReservationSuccess(reservation) {
@@ -139,8 +144,9 @@ function showReservationSuccess(reservation) {
   document.querySelector("#success-code-value").textContent = reservation.reservation_code || "-";
   document.querySelector("#success-date").textContent = formatConfirmationDate(reservation.date || confirmationDraft.appointment_date, { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
   document.querySelector("#success-time").textContent = `${String(reservation.time || confirmationDraft.start_time).replace(":", ".")} WIB`;
-  document.querySelector("#success-total").textContent = formatConfirmationMoney(reservation.amount ?? confirmationTotal());
+  document.querySelector("#success-total").textContent = formatConfirmationMoney(reservation.total_price ?? reservation.amount ?? confirmationTotal());
   document.querySelector("#success-payment-method").textContent = reservation.payment_method || confirmationDraft.payment_method || "E-Wallet";
+  document.querySelector("#success-payment-status").textContent = String(reservation.payment_status_label || "Menunggu pembayaran").toLowerCase();
 }
 
 async function checkConfirmationSession() {
@@ -194,6 +200,7 @@ document.querySelectorAll("input[name='payment-method']").forEach(input => {
     if (!confirmationDraft) return;
     document.querySelectorAll(".payment-option").forEach(option => option.classList.toggle("is-selected", option.contains(input) && input.checked));
     confirmationDraft.payment_method = input.value;
+    document.querySelector("#summary-payment").textContent = input.value;
     saveConfirmationDraft();
   });
 });
@@ -226,18 +233,22 @@ document.querySelector("#confirm-reservation").addEventListener("click", async (
         addon_ids: (confirmationDraft.addons || []).map(item => item.id),
         date: confirmationDraft.appointment_date,
         time: confirmationDraft.start_time,
-        payment_method: selectedPayment
+        payment_method: selectedPayment,
+        expected_total: confirmationTotal()
       })
     });
     const payload = await response.json().catch(() => ({}));
     if (response.status === 401) {
-      window.location.href = "login.html?next=booking-confirmation.html";
+      window.location.href = `login.html?next=${BOOKING_REVIEW_PAGE}`;
       return;
     }
     if (!response.ok) {
       showConfirmationToast(payload.error || "Reservasi belum dapat dikonfirmasi. Silakan coba lagi.");
       if (payload.code === "TIME_UNAVAILABLE") {
-        window.setTimeout(() => { window.location.href = "booking-datetime.html"; }, 1200);
+        // The slot was taken by another customer: send them back to pick another time.
+        window.setTimeout(() => { window.location.href = BOOKING_DATETIME_PAGE; }, 1200);
+      } else if (payload.code === "PRICE_CHANGED") {
+        window.setTimeout(() => { window.location.href = BOOKING_SERVICES_PAGE; }, 2000);
       }
       return;
     }
@@ -254,7 +265,7 @@ document.querySelector("#confirm-reservation").addEventListener("click", async (
     if (!document.querySelector("#reservation-success").hidden) return;
     setConfirmationBusy(false);
     button.disabled = !activeCustomer?.authenticated;
-    label.textContent = "Konfirmasi Pesanan";
+    label.textContent = "Konfirmasi Reservasi";
   }
 });
 

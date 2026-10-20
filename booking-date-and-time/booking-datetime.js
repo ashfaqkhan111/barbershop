@@ -1,11 +1,14 @@
+const BOOKING_SERVICES_PAGE = "../booking-service/booking_service.php";
+const BOOKING_REVIEW_PAGE = "../booking-confirmation/booking-review.php";
+
 let bookingDraft = readBookingDraft() || {
   service: { id: "", name: "Belum dipilih", price: 0, duration_minutes: 0 },
   hairstyle: { id: "", name: "Belum dipilih", price: 0 },
   addons: []
 };
 const hasBookingDraft = Boolean(bookingDraft.service?.id && bookingDraft.hairstyle?.id);
-if (!hasBookingDraft) window.location.replace("booking-services.html");
-if (bookingDraft?.reservation) window.location.replace("booking-confirmation.html");
+if (!hasBookingDraft) window.location.replace(BOOKING_SERVICES_PAGE);
+if (bookingDraft?.reservation) window.location.replace(BOOKING_REVIEW_PAGE);
 let bookingSubmitting = false;
 let bookingToken = bookingDraft?.request_token || createBookingToken();
 const today = new Date();
@@ -251,7 +254,7 @@ document.querySelector("#next-month").addEventListener("click", () => {
 
 document.querySelectorAll("[data-edit]").forEach(button => {
   button.addEventListener("click", () => {
-    if (button.dataset.edit === "service") window.location.href = "booking-services.html";
+    if (button.dataset.edit === "service") window.location.href = BOOKING_SERVICES_PAGE;
     else document.querySelector(button.dataset.edit === "date" ? ".calendar-card" : ".time-card").scrollIntoView({ behavior: "smooth", block: "center" });
   });
 });
@@ -264,7 +267,7 @@ document.querySelector("#cancel-booking").addEventListener("click", () => {
 document.querySelector("#continue-booking").addEventListener("click", async () => {
   if (bookingSubmitting) return;
   if (!hasBookingDraft) {
-    window.location.href = "booking-services.html";
+    window.location.href = BOOKING_SERVICES_PAGE;
     return;
   }
   if (!selectedBookingDate) {
@@ -303,13 +306,13 @@ document.querySelector("#continue-booking").addEventListener("click", async () =
       return;
     }
     buttonLabel.textContent = "Membuka konfirmasi…";
-    window.location.href = "booking-confirmation.html";
+    window.location.href = BOOKING_REVIEW_PAGE;
   } catch (error) {
     showDateTimeToast("Jadwal belum dapat diperiksa. Coba lagi sebentar.");
   } finally {
     bookingSubmitting = false;
     button.removeAttribute("aria-busy");
-    if (window.location.pathname.endsWith("booking-datetime.html")) {
+    if (window.location.pathname.endsWith("booking-datetime.php")) {
       button.disabled = false;
       buttonLabel.textContent = "Lanjut ke Konfirmasi";
     }

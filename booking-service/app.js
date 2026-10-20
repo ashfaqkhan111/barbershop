@@ -21,11 +21,31 @@ const defaultBookingCatalog = [
   { id: "hair-mask", category: "addon", name: "Masker Rambut", price: 40000, duration_minutes: 15 }
 ];
 
+const BOOKING_DATETIME_PAGE = "../booking-date-and-time/booking-datetime.php";
+
+function readSavedDraft() {
+  try {
+    const raw = sessionStorage.getItem("pemonBookingDraft");
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
 let bookingCatalog = [...defaultBookingCatalog];
 let selectedServiceId = "haircut";
 let selectedHairstyleId = "classic-cut";
 let selectedAddonIds = new Set();
 let bookingToastTimer;
+
+// Coming back from a later step keeps the customer's current selections.
+(function restoreDraftSelections() {
+  const saved = readSavedDraft();
+  if (!saved || saved.reservation || !saved.service?.id || !saved.hairstyle?.id) return;
+  selectedServiceId = String(saved.service.id);
+  selectedHairstyleId = String(saved.hairstyle.id);
+  selectedAddonIds = new Set((saved.addons || []).map(item => String(item.id)));
+})();
 
 const bookingEscape = value => String(value ?? "").replace(/[&<>"']/g, character => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -127,19 +147,33 @@ document.querySelector("#service-picker").addEventListener("submit", event => {
   const service = catalogByCategory("service").find(item => String(item.id) === String(selectedServiceId));
   const hairstyle = catalogByCategory("hairstyle").find(item => String(item.id) === String(selectedHairstyleId));
   const addons = catalogByCategory("addon").filter(item => selectedAddonIds.has(String(item.id)));
+  if (!service || !hairstyle) {
+    showBookingToast("Pilih layanan dan gaya rambut terlebih dahulu.");
+    return;
+  }
+  // The estimate is for display only; the server recalculates the price from its own catalog.
+  // Nothing is saved to the database here: the selections are only carried to the next step.
+  const previous = readSavedDraft();
+  const carried = previous && !previous.reservation ? previous : {};
   const draft = {
+    ...carried,
     service,
     hairstyle,
     addons,
-    estimate: Number(service?.price || 0) + addons.reduce((sum, item) => sum + Number(item.price || 0), 0)
+    estimate: Number(service.price || 0) + addons.reduce((sum, item) => sum + Number(item.price || 0), 0)
   };
-  try { sessionStorage.setItem("pemonBookingDraft", JSON.stringify(draft)); } catch (error) { /* Browser storage may be unavailable in file preview. */ }
-  showBookingToast("Pilihan layanan tersimpan. Silakan lanjutkan dengan memilih tanggal dan jam.");
+  try {
+    sessionStorage.setItem("pemonBookingDraft", JSON.stringify(draft));
+  } catch (error) {
+    showBookingToast("Pilihan belum tersimpan di browser. Aktifkan penyimpanan sesi lalu coba lagi.");
+    return;
+  }
+  window.location.href = BOOKING_DATETIME_PAGE;
 });
 
 async function loadBookingCatalog() {
   try {
-    const response = await fetch("./booking-services.php", { headers: { Accept: "application/json" } });
+    const response = await fetch("./booking_service.php?format=json", { headers: { Accept: "application/json" }, cache: "no-store" });
     if (!response.ok) throw new Error(`Katalog memberikan respons ${response.status}`);
     const payload = await response.json();
     if (Array.isArray(payload.catalog)) bookingCatalog = payload.catalog;

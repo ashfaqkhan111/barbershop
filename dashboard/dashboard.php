@@ -4,7 +4,7 @@ declare(strict_types=1);
 ini_set('session.use_strict_mode', '1');
 session_start();
 
-require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 $authenticated = false;
 $customer = null;
@@ -48,7 +48,7 @@ if ($customerId) {
             $jakartaNow = new DateTimeImmutable('now', new DateTimeZone('Asia/Jakarta'));
             $upcomingStatement = $pdo->prepare(
                 "SELECT reservation_code, status, service_name, hairstyle_name, barber_name,
-                        appointment_date, start_time, end_time, amount
+                        appointment_date, start_time, end_time, total_price
                  FROM reservations
                  WHERE customer_id = :customer_id
                    AND status IN ('upcoming', 'pending_confirmation', 'confirmed')
@@ -65,7 +65,7 @@ if ($customerId) {
             $upcoming = $upcomingStatement->fetch() ?: null;
 
             if ($upcoming) {
-                $upcoming['amount'] = (int) $upcoming['amount'];
+                $upcoming['total_price'] = (int) $upcoming['total_price'];
                 $upcoming['status_label'] = match ($upcoming['status']) {
                     'confirmed' => 'Dikonfirmasi',
                     'pending_confirmation' => 'Menunggu konfirmasi',
@@ -104,7 +104,7 @@ if ($customerId) {
         <a href="index.html">Beranda</a>
         <a class="active" href="dashboard.php" aria-current="page">Dasbor</a>
         <a href="schedule.html">Jadwal</a>
-        <a href="index.html">Riwayat Reservasi</a>
+        <a href="../reservation-history/reservation_history.php">Riwayat Reservasi</a>
         <a href="#lookbook">Tentang Kami</a>
       </nav>
       <div class="header-actions">
@@ -164,7 +164,7 @@ if ($customerId) {
                 <?php endif; ?>
                 <p><strong>Tanggal:</strong> <?= htmlspecialchars($upcoming['appointment_date']) ?> (<?= htmlspecialchars($upcoming['start_time']) ?> - <?= htmlspecialchars($upcoming['end_time']) ?>)</p>
                 <p><strong>Kode Reservasi:</strong> <?= htmlspecialchars($upcoming['reservation_code']) ?></p>
-                <p><strong>Jumlah:</strong> Rp <?= number_format($upcoming['amount'], 0, ',', '.') ?></p>
+                <p><strong>Jumlah:</strong> Rp <?= number_format($upcoming['total_price'], 0, ',', '.') ?></p>
               <?php else: ?>
                 <p>Tidak ada reservasi aktif saat ini.</p>
               <?php endif; ?>
@@ -193,9 +193,9 @@ if ($customerId) {
         </div>
 
         <nav class="quick-links" aria-label="Pintasan akun">
-          <a class="quick-link primary" href="booking-services.html"><span class="quick-icon">＋</span><span><strong>Pesan Reservasi Baru</strong><small>Pilih layanan dan waktu kunjungan</small></span><span class="quick-arrow">→</span></a>
+          <a class="quick-link primary" href="../booking-service/booking_service.php"><span class="quick-icon">＋</span><span><strong>Pesan Reservasi Baru</strong><small>Pilih layanan dan waktu kunjungan</small></span><span class="quick-arrow">→</span></a>
           <a class="quick-link" href="schedule.html"><span class="quick-icon"><svg aria-hidden="true"><use href="#icon-calendar"></use></svg></span><span><strong>Lihat Jadwal</strong><small>Jam buka dan reservasi akunmu</small></span><span class="quick-arrow">→</span></a>
-          <a class="quick-link" href="index.html"><span class="quick-icon"><svg aria-hidden="true"><use href="#icon-history"></use></svg></span><span><strong>Riwayat Reservasi</strong><small>Lihat kunjungan sebelumnya</small></span><span class="quick-arrow">→</span></a>
+          <a class="quick-link" href="../reservation-history/reservation_history.php"><span class="quick-icon"><svg aria-hidden="true"><use href="#icon-history"></use></svg></span><span><strong>Riwayat Reservasi</strong><small>Lihat kunjungan sebelumnya</small></span><span class="quick-arrow">→</span></a>
         </nav>
       </section>
 
@@ -223,7 +223,7 @@ if ($customerId) {
     <footer class="site-footer">
       <div class="footer-grid">
         <div class="footer-brand-column"><a class="brand footer-brand" href="dashboard.php"><span class="brand-script">pemon</span><span class="brand-subtitle">BARBERSHOP</span></a><p>Perawatan diri modern dengan keahlian, keramahan, dan perhatian pada setiap detail.</p></div>
-        <div><h2>Navigasi Cepat</h2><a href="dashboard.php">Dasbor</a><a href="schedule.html">Jadwal</a><a href="index.html">Riwayat Reservasi</a></div>
+        <div><h2>Navigasi Cepat</h2><a href="dashboard.php">Dasbor</a><a href="schedule.html">Jadwal</a><a href="../reservation-history/reservation_history.php">Riwayat Reservasi</a></div>
         <div><h2>Hubungi Kami</h2><a href="https://wa.me/6281234567890">WhatsApp: +62 812-3456-7890</a><a href="tel:+62217892041">Telepon: (021) 789-2041</a><span>Setiap hari: 09.00–21.00 WIB</span></div>
         <div><h2>Kunjungi Kami</h2><p>Senopati Suites No. 14<br>Jakarta Selatan</p><a href="mailto:hello@pemonbarbershop.com">hello@pemonbarbershop.com</a></div>
       </div>
