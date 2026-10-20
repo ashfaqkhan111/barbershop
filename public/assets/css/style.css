@@ -1,0 +1,81 @@
+:root{--g9:#0b3d33;--g8:#104a3d;--m50:#e6fff6;--m100:#d5fbee;--m200:#bff3e1;--m300:#a7ecd5;--ink:#12362e;--muted:#4d6b62;--err:#b42318}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#d9fbef,#e6fff6 40%);line-height:1.6;font-size:.95rem}
+img,svg{max-width:100%}a{color:inherit}
+.container{width:100%;max-width:1140px;margin:0 auto;padding:0 1rem}
+.serif{font-family:'Playfair Display',serif;color:var(--g9);line-height:1.15;margin:0}
+.eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--g8)}
+.muted{color:var(--muted)}.center{text-align:center}
+.section{padding:3rem 0}
+.btn{display:inline-block;border:0;border-radius:50rem;padding:.85rem 1.6rem;font:600 .9rem inherit;font-family:inherit;text-decoration:none;cursor:pointer;background:var(--g9);color:#fff;text-align:center}
+.btn:hover{background:var(--g8)}.btn.light{background:#fff;color:var(--g9)}.btn.mint{background:var(--m300);color:var(--g9)}
+
+/* Navbar */
+.nav{position:sticky;top:0;z-index:10;background:var(--g9)}
+.nav .container{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:.8rem;padding-bottom:.8rem}
+.brand{font:italic 1.5rem/1 'Playfair Display',serif;color:#fff;text-decoration:none}
+.brand small{display:block;font:.58rem 'Plus Jakarta Sans',sans-serif;letter-spacing:.3em;color:var(--m300);margin-top:4px;font-style:normal}
+.burger{background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer;line-height:1}
+.menu{display:none;width:100%;flex-direction:column;gap:.25rem;padding:.8rem 0 .4rem}
+.menu.open{display:flex}
+.menu a{color:#9fd3c3;text-decoration:none;font-weight:500;padding:.55rem 0}
+.menu a:hover,.menu a.on{color:#fff}
+.menu .user{color:#fff;font-weight:600;padding:.55rem 0}
+
+/* Hero */
+.hero{text-align:center;padding:3.5rem 0 2rem}
+.pill{display:inline-block;background:var(--m200);color:var(--g8);border-radius:50rem;padding:.4rem 1rem;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600}
+.hero h1{font-size:clamp(2.2rem,8vw,4.3rem);margin:1.2rem 0}
+.hero p{max-width:640px;margin:0 auto 1.8rem}
+.actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center}
+.stats{display:grid;gap:1rem;margin-top:2.5rem;background:var(--m100);border-radius:1.5rem;padding:1.5rem 1rem}
+.stats strong{display:block;font-size:1.1rem}.stats small{color:var(--muted)}
+
+/* Grid kartu (otomatis menyesuaikan lebar layar) */
+.grid{display:grid;gap:1.25rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.card{position:relative;background:#fff;border-radius:1.5rem;padding:1.75rem;box-shadow:0 2px 12px rgba(11,61,51,.05)}
+.card.soft{background:var(--m100);box-shadow:none}
+.tile{width:56px;height:56px;border-radius:1rem;background:var(--m100);display:grid;place-items:center;font-size:1.4rem;margin-bottom:1.1rem}
+.card.soft .tile{background:var(--m200)}.tile.dark{background:var(--g9)}
+.card h3{margin:0 0 .4rem;font-size:1.1rem}.card p{margin:0;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:.6rem;margin:1.1rem 0 .8rem;font-size:.85rem}.meta b{font-size:1rem}
+.book{font-weight:600;text-decoration:none;color:var(--g9)}.book:hover{text-decoration:underline}
+.tag{position:absolute;top:-12px;right:18px;background:var(--g9);color:#fff;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:.35rem .8rem;border-radius:50rem}
+.head{margin-bottom:1.75rem}.head h2{font-size:clamp(1.6rem,4.5vw,2.4rem)}
+.step-num{width:64px;height:64px;border-radius:50%;background:var(--g9);color:#fff;display:grid;place-items:center;font-weight:600;font-size:1.1rem;margin:0 auto 1rem}
+
+/* CTA & footer */
+.cta{background:var(--g8);color:#fff;border-radius:1.75rem;padding:2rem 1.5rem;display:grid;gap:1.5rem;align-items:center}
+.cta h2{color:#fff;font-size:clamp(1.7rem,5vw,2.4rem);margin:.4rem 0 .8rem}.cta p{color:#a9cfc3;margin:0}.cta .eyebrow{color:#9fd3c3}
+footer{background:var(--m100);margin-top:3rem;padding-top:2.5rem;color:var(--muted)}
+footer h4{color:var(--g9);margin:0 0 .8rem}footer ul{list-style:none;padding:0;margin:0}footer li{margin-bottom:.6rem}footer a{text-decoration:none;color:var(--ink)}
+footer .brand{color:var(--g9)}footer .brand small{color:var(--g8)}
+.legal{margin-top:2rem;padding:1.25rem 0;font-size:.82rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem}
+
+/* Halaman login & daftar */
+.auth{min-height:100vh;display:grid;place-items:center;padding:1.5rem 1rem;background:#fff}
+.box{width:100%;max-width:440px;background:#fff;border-radius:1.25rem;padding:2rem 1.5rem;box-shadow:0 20px 50px rgba(7,68,58,.12)}
+.logo{width:48px;height:48px;border-radius:.8rem;background:var(--g9);color:#fff;display:grid;place-items:center;font-size:1.4rem;margin:0 auto .8rem}
+.box h1{font-size:1.5rem;text-align:center;margin:.25rem 0 .4rem}.box .sub{text-align:center;font-size:.88rem;color:var(--muted);margin:0 0 1.5rem}
+label{display:block;font-size:.78rem;font-weight:700;margin:0 0 .4rem}
+.field{position:relative;margin-bottom:1rem}
+.field input{width:100%;height:48px;border:1px solid #d6e6e0;border-radius:.7rem;padding:0 3rem 0 1rem;font:inherit;font-size:1rem;background:#fff;color:var(--ink)}
+.field input:focus{outline:2px solid var(--g9);border-color:var(--g9)}
+.toggle{position:absolute;right:.5rem;top:0;height:48px;width:44px;background:none;border:0;cursor:pointer;font-size:1.05rem}
+.check{display:flex;gap:.6rem;align-items:flex-start;font-size:.8rem;font-weight:400;color:var(--muted);margin:1rem 0 1.25rem}
+.check input{margin-top:.2rem;accent-color:var(--g9)}
+.box .btn{width:100%;height:48px;border-radius:.7rem}
+.alert{background:#fef3f2;color:var(--err);border:1px solid #fecdca;border-radius:.7rem;padding:.7rem 1rem;margin-bottom:1rem;font-size:.85rem}
+.switch{text-align:center;margin:1.5rem 0 0;font-size:.88rem;color:var(--muted)}.switch a{color:var(--g9);font-weight:700}
+
+/* Tablet & desktop */
+@media(min-width:640px){.box{padding:2.5rem}.stats{grid-template-columns:repeat(3,1fr)}.stats div+div{border-left:1px solid #b9e8d6}.hero{padding:5rem 0 3rem}}
+@media(min-width:900px){
+  .burger{display:none}
+  .menu{display:flex;flex-direction:row;width:auto;gap:1.75rem;padding:0;align-items:center}
+  .menu a{padding:.3rem 0;border-bottom:2px solid transparent}.menu a.on{border-color:var(--m300)}
+  .section{padding:4.5rem 0}.cta{grid-template-columns:2fr 1fr;padding:3.5rem}.cta .end{text-align:right}
+  .foot{display:grid;grid-template-columns:1.3fr 1fr 1.3fr;gap:2rem}
+}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}

@@ -1,0 +1,106 @@
+[hidden] { display: none !important; }
+.confirmation-main { max-width: 1120px; }
+.confirmation-layout { grid-template-columns: 150px minmax(0, 1.4fr) minmax(235px, .88fr); gap: 18px; }
+.confirmation-card { min-height: 0; padding: 22px; }
+.confirmation-card-heading { display: flex; align-items: center; gap: 11px; margin-bottom: 17px; }
+.confirmation-card-heading h2 { margin: 0 0 3px; color: #203b35; font-size: 15px; }
+.confirmation-card-heading p { margin: 0; color: #7e8d88; font-size: 10px; }
+.review-section { padding: 13px 0; border-top: 1px solid #edf1ef; }
+.review-section h3 { margin: 0 0 10px; color: #24433b; font-size: 11px; }
+.section-title-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.section-title-row h3 { margin: 0 0 9px; }
+.section-title-row a { margin: 0 0 8px; color: #276d5e; font-size: 9px; font-weight: 600; }
+.section-title-row a:hover { text-decoration: underline; }
+.review-detail-row { display: grid; grid-template-columns: minmax(92px, .78fr) minmax(0, 1.5fr) auto; align-items: start; gap: 10px; padding: 5px 0; color: #71817c; font-size: 10px; line-height: 1.4; }
+.review-detail-row strong { color: #29473f; font-weight: 600; }
+.review-detail-row strong:last-child { color: #233c36; text-align: right; }
+.customer-status { display: flex; min-height: 40px; align-items: center; padding: 10px 12px; border-radius: 9px; color: #174f42; background: #eff9f5; font-size: 11px; }
+.customer-status.is-loading { color: #71817c; background: #f5f8f6; }
+.customer-details { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 13px 15px; border: 1px solid #edf2f0; border-radius: 10px; background: #fbfdfc; }
+.customer-details > div { display: grid; gap: 4px; }
+.customer-details span { color: #82918b; font-size: 9px; }
+.customer-details strong { color: #253d36; font-size: 10px; font-weight: 600; }
+.auth-required { padding: 11px 12px; border: 1px solid #f1dfca; border-radius: 9px; background: #fffaf3; }
+.auth-required p { margin: 0 0 9px; color: #705a3d; font-size: 10px; line-height: 1.5; }
+.auth-required > div { display: flex; gap: 8px; }
+.secondary-action { display: inline-flex; min-height: 34px; align-items: center; justify-content: center; padding: 0 13px; border: 1px solid #cfddd7; border-radius: 99px; color: #34554b; background: #fff; font-size: 10px; font-weight: 600; cursor: pointer; }
+.secondary-action:hover { background: #f2faf6; }
+.secondary-action.is-disabled { opacity: .55; pointer-events: none; }
+.payment-section { padding-bottom: 7px; }
+.payment-options { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.payment-option { display: flex; min-height: 46px; align-items: center; gap: 8px; padding: 9px 11px; border: 1px solid #dfe8e4; border-radius: 9px; background: #fff; cursor: pointer; }
+.payment-option.is-selected { border-color: #0d594b; background: #f2faf7; box-shadow: inset 0 0 0 1px #0d594b; }
+.payment-option input { width: 13px; height: 13px; flex: 0 0 13px; margin: 2px 0 0; accent-color: #06483d; }
+.payment-option span { display: grid; gap: 4px; }
+.payment-option strong { color: #29463e; font-size: 9px; line-height: 1.25; }
+.payment-option small { color: #82918b; font-size: 8px; line-height: 1.35; }
+.payment-note { margin: 9px 0 0; color: #788981; font-size: 9px; line-height: 1.5; }
+.confirmation-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 13px; border-top: 1px solid #edf1ef; }
+.confirm-button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; gap: 10px; padding: 0 18px; border: 0; border-radius: 10px; color: #fff; background: #06483d; font-size: 10px; font-weight: 700; cursor: pointer; }
+.confirm-button:hover:not(:disabled) { background: #0b5b4e; }
+.confirm-button:disabled { background: #9cafaa; cursor: not-allowed; }
+.confirm-button svg { width: 16px; height: 16px; }
+.final-check-note { margin: 10px 0 0; color: #7c8a84; font-size: 9px; line-height: 1.5; }
+.cancel-reservation { display: block; margin: 8px auto 0; padding: 5px 8px; border: 0; color: #8d4a4a; background: transparent; font-size: 9px; cursor: pointer; }
+.cancel-reservation:hover { color: #b52929; text-decoration: underline; }
+.final-summary { min-height: 0; padding: 19px 17px; }
+.final-summary .recap-title { margin-bottom: 4px; }
+.summary-block { display: grid; gap: 4px; padding: 13px 0; border-bottom: 1px solid #eef2f0; }
+.summary-label { color: #81918a; font-size: 8px; font-weight: 700; letter-spacing: 1px; }
+.summary-block strong { color: #21453b; font-size: 11px; }
+.summary-block > span:not(.summary-label) { color: #788983; font-size: 9px; line-height: 1.4; }
+.summary-total { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 16px 0 13px; color: #2a443d; font-size: 11px; }
+.summary-total strong { color: #073f35; font-size: 17px; }
+.summary-reminder { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 10px; border-radius: 8px; color: #54766d; background: #eaf7f2; font-size: 9px; line-height: 1.5; }
+.summary-reminder span { display: grid; width: 14px; height: 14px; flex: 0 0 14px; place-items: center; border-radius: 50%; color: #fff; background: #37816e; font-size: 9px; font-weight: 700; }
+.confirmation-success { display: flex; max-width: 750px; min-height: 0; flex-direction: column; align-items: center; margin: 32px auto; padding: 46px 35px; text-align: center; }
+.success-mark { display: grid; width: 54px; height: 54px; place-items: center; margin-bottom: 18px; border-radius: 50%; color: #fff; background: #0a594a; font-size: 26px; }
+.confirmation-success .datetime-eyebrow { margin-bottom: 8px; }
+.confirmation-success h2 { margin: 0; color: #123f35; font-family: "Playfair Display", Georgia, serif; font-size: 30px; }
+.confirmation-success > p:not(.datetime-eyebrow) { max-width: 470px; color: #687b73; font-size: 12px; line-height: 1.6; }
+.success-code { display: grid; gap: 5px; min-width: min(320px, 100%); margin: 12px 0; padding: 15px 22px; border: 1px dashed #a7cbbd; border-radius: 11px; background: #f4fbf8; }
+.success-code span { color: #788981; font-size: 9px; }
+.success-code strong { color: #0b4b3f; font-size: 20px; letter-spacing: 1px; }
+.success-details { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px 20px; margin: 8px 0; color: #536b62; font-size: 10px; }
+.success-details strong { color: #17463b; }
+.confirmation-success .success-payment { margin: 7px 0 20px; font-size: 10px; }
+.success-home { min-width: 180px; text-decoration: none; }
+.confirmation-toast { z-index: 30; }
+
+@media (max-width: 1050px) {
+  .confirmation-layout { grid-template-columns: 130px minmax(0, 1.35fr) minmax(205px, .85fr); gap: 12px; }
+  .confirmation-card { padding: 18px 15px; }
+  .review-detail-row { grid-template-columns: minmax(78px, .75fr) minmax(0, 1.4fr) auto; gap: 7px; font-size: 9px; }
+  .payment-options { gap: 6px; }
+  .payment-option { padding: 8px 9px; }
+}
+@media (max-width: 850px) {
+  .confirmation-layout { grid-template-columns: 1fr 1fr; }
+  .confirmation-layout > .datetime-steps { grid-column: 1 / -1; }
+  .confirmation-layout > .confirmation-card { grid-column: 1 / -1; }
+  .confirmation-layout > .final-summary { grid-column: 1 / -1; }
+  .confirmation-card { padding: 20px; }
+  .final-summary { padding: 19px 20px; }
+  .summary-block { grid-template-columns: 130px minmax(0, 1fr); align-items: baseline; }
+  .summary-label { grid-row: span 2; }
+  .summary-total { max-width: 320px; margin-left: auto; }
+}
+@media (max-width: 560px) {
+  .confirmation-layout { grid-template-columns: 1fr; }
+  .confirmation-layout > .datetime-steps,
+  .confirmation-layout > .confirmation-card,
+  .confirmation-layout > .final-summary { grid-column: 1; }
+  .confirmation-card { padding: 17px 14px; }
+  .review-detail-row { grid-template-columns: 92px minmax(0, 1fr); }
+  .review-detail-row strong:last-child { grid-column: 2; text-align: left; }
+  .payment-options { grid-template-columns: 1fr; }
+  .payment-option { min-height: 54px; align-items: center; }
+  .confirmation-actions { align-items: stretch; }
+  .confirmation-actions > * { flex: 1; }
+  .confirm-button { padding: 0 10px; }
+  .summary-block { grid-template-columns: 1fr; }
+  .summary-label { grid-row: auto; }
+  .summary-total { max-width: none; }
+  .confirmation-success { margin-top: 20px; padding: 33px 19px; }
+  .confirmation-success h2 { font-size: 25px; }
+}
